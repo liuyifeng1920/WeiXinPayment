@@ -1,0 +1,142 @@
+/* 集体声明 */
+html {
+    -webkit-text-size-adjust: 100%; 
+    -ms-text-size-adjust: 100%;
+}
+body,div,ul,li,dl,dt,dd,h1,h2,h3,h4,h5,h6,p,input,img,header,figure,a,nav,table,tr,td,thead{margin:0;padding:0;}
+input,img,button{border:0;}
+
+body{font:16px/1.5 黑体;
+	min-width: 320px;
+	max-width: 720px;
+	width: 100%;
+	height: 100%;
+	margin: 0 auto;
+	overflow-x: hidden;
+background-color: #eee;
+color:#333;}
+button{font-size:16px;font-family: "黑体";color:#fff;}
+
+em { font-style:normal; }
+input, button, select, textarea { outline:none; } 
+textarea { resize:none; } 
+a {color:#333;text-decoration:none;border:0; }
+a:hover {text-decoration:none; }
+a,input,button,li {
+  -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+
+
+img {
+max-width： 100%;
+height： auto;
+border:0;
+}
+
+li{list-style: none;}
+
+
+/* 话费充值 */
+nav,.phone-num,.main,.tips,.paymain,.s-main,.article1,.article2,.partone,.parttwo{width:85%;margin:0 auto;}
+
+.cur{background-color: #d94716!important;color:#fff;}
+.cur a{color:#fff;}
+nav{padding:20px 0;overflow: hidden;}
+.nav-l{float: left;border-radius: 10px 0 0 10px;}
+.nav-r{float: right;border-radius: 0 10px 10px 0;}
+nav p{background-color: #fff;width:50%;padding:10px 0;text-align: center;border:1px solid #d94716;box-sizing:border-box;}
+nav p a{width:100%;height:100%;display: block;}
+
+
+.phone-num input{width:100%;padding:10px 0 10px 4px;color:#333;font-size:18px;font-family: "黑体";margin-bottom: 10px;}
+.red{color:#d94716;}
+.phone-num p{padding-bottom:5px;}
+
+
+.main{overflow: hidden;padding:20px 0;}
+.main ul li{float: left;border-radius: 10px;padding:10px 0;width:30%;background-color: #fff;text-align: center;border:1px solid #d94716;margin-right: 3%;margin-bottom: 3%;box-sizing:border-box;}
+
+
+.tips{padding:15px 0 100px 0;}
+.tips p{color:#aaa;height:auto;}
+
+footer{width:100%;height:60px;position: fixed;bottom:0;background:#000;padding:0 20px;overflow: hidden;box-sizing:border-box;}
+footer p{color:#fff;float: left;line-height: 60px;height: 60px;}
+footer p span{color:#d94716;}
+footer button{float:right;border-radius: 5px;background-color: #d94716;width:80px;height:40px;margin-top: 10px;}
+
+
+
+
+/* 订单查询 */
+.phone-num button{width:100%;height:auto;padding:10px 0;margin:10px 0;border-radius: 5px;}
+table{width:100%;text-align: center;background-color: #fff;}
+table,td,th{border-collapse: collapse;border:1px solid #ccc;cellspacing:0;cellpadding:0;}
+.result{padding:20px 0;}
+.result table th{background-color: #e4e4e4;}
+
+.more{width:100%;padding:20px 0;text-align: center;color:#aaa;}
+.more i{position:relative;width:18px;height:18px;}
+.more i em,.more i span{
+	width:0;
+	height:0;
+	border-width:10px;
+	border-style:solid dashed dashed dashed ;
+	border-color:#aaa transparent transparent transparent ;
+	position:absolute;
+	left:-12px;
+	top:10px;
+	overflow:hidden;
+	}
+.more i span{border-top-color:#eee;top:8px;}
+
+/* 付款 */
+.paymain img{width:100%;height:auto;padding-top:10px;}
+.paycontent p{padding:10px 0;}
+.paycontent p:first-child{color:#ff7700;}
+.paycontent p:last-child{color:#d94716;}
+
+
+
+/* 充值成功跳转页面 */
+.s-top{width:100%;padding:20px 0;padding-left: 20%;background:url(../mark.png) no-repeat left center;background-size: 10%;}
+.s-top p{font-size: 24px;color:#9BCE1A;}
+.s-content{padding:20px 0;}
+.s-tip p{color:#aaa;}
+.trans{padding:20px 0;color:#ff7700;}
+
+
+/* article1 */
+.article1 img{width:50%;height:auto;display: block;margin:0 auto;padding:20px 0;}
+.article1 p{padding:5px 0;text-indent: 2em;}
+
+/* article2 */
+.article2 img{width:100%;height:auto;display:block;}
+.article2 p{text-indent: 2em;}
+.article2 h3{margin-top:10px;}
+.article2 img,.article2 p,.article2 h3{padding:5px 0;}
+
+
+.erweima{padding-top:20px;color:#ff7700;border-top:1px dashed #ccc;}
+.erweima img{width:50%;height:auto;display: block;margin:0 auto;}
+
+
+/* 支付 */
+.partone-wrap{width:100%;background-color: #fff;}
+.partone{overflow: hidden;padding:10px 0;}
+.partone-l{float: left;}
+.partone-l span{color:#ccc;}
+.partone-r{float: right;}
+.partone-r p{color:red;}
+
+.parttwo-wrap{width:100%;background-color: #484848;color:#fff;padding:10px 0;}
+
+.partthree{background-color: #fff;border-top:1px solid #ccc;border-bottom:1px solid #ccc;overflow: hidden;padding:10px 10px 10px 0;margin-top:10px;height:90px;}
+.partthree-l{float: left;}
+.partthree-l img{}
+.partthree-m{float: left;padding-top:21px;}
+.partthree-m span{color:#ccc;}
+.partthree-r{float:right;padding-top:34px;}
+
+.tishi{display: none;}
+.tishi p{font-size:28px;width:100%;text-align: center;color:red;padding:10px 0;}

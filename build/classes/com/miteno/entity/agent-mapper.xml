@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="agent">
+
+	<select id="query" resultType="com.miteno.entity.Agent"
+		parameterType="java.util.HashMap">
+		select
+		a.businessid,
+		(SELECT appname FROM billing_channel WHERE appid =
+		a.appid)as appid,
+		a.businessname,
+		a.businesstel,
+		a.businessadd,
+		a.daylimit,
+		a.mouthlimit
+		from agent
+		a where 1=1
+		<if test="t.businessid !=null  and  t.businessid !=''">
+			and businessid =#{t.businessid}
+		</if>
+		<if test="t.businessname !=null and  t.businessname !=''">
+
+			and businessname like '%${t.businessname}%'
+
+		</if>
+		order by a.businessid
+	</select>
+
+
+	<!-- 添加 -->
+
+	<insert id="add" parameterType="com.miteno.entity.Agent">
+		insert into agent(
+		businessid,appid,businessadd,
+		businessname,businesstel,daylimit,mouthlimit)
+		values
+		(#{businessid},
+		#{appid},
+		#{businessadd},
+		#{businessname},
+		#{businesstel},
+		#{daylimit},
+		#{mouthlimit}
+		)
+	</insert>
+	<!-- 查询appid -->
+	<select id="searchSelect" resultType="com.miteno.entity.BillingChannel">
+		SELECT appid, appname FROM
+		billing_channel
+	</select>
+	<select id="MaxAgent" resultType="Long">
+		SELECT MAX(businessid+0) FROM agent
+
+	</select>
+
+	<!-- 代理商表与渠道表做关联，验证使用 -->
+	<select id="getAgentAndBillingByBusinessid" parameterType="String"
+		resultType="com.miteno.entity.Agent">
+		select
+		businessid,
+		t.appid,
+		t.daylimit,
+		t.mouthlimit,
+		businessname,
+		businesstel,
+		businessadd,
+		appkey,
+		appsecret
+		from agent
+		t,billing_channel b WHERE
+		t.appid=b.appid AND
+		t.businessid=#{businessid}
+	</select>
+
+
+	<!-- 进入修改页面 -->
+
+	<select id="getById" parameterType="String" resultType="com.miteno.entity.Agent">
+		select
+		businessid,
+		appid,
+		businessname,
+		businesstel,
+		businessadd,
+		daylimit,
+		mouthlimit
+		from agent where
+		businessid =#{agentId}
+	</select>
+	<!-- 更新 -->
+	<update id="update" parameterType="com.miteno.entity.Agent">
+		update agent
+		<set>
+			<if test="appid !=null">
+				appid = #{appid},
+			</if>
+			<if test=" businessname !=null">
+				businessname = #{businessname},
+			</if>
+			<if test=" businesstel !=null">
+				businesstel = #{businesstel},
+			</if>
+			<if test=" businessadd !=null">
+				businessadd =#{businessadd},
+			</if>
+			<if test=" daylimit !=null">
+				daylimit =#{daylimit},
+			</if>
+			<if test=" mouthlimit !=null">
+				mouthlimit =#{mouthlimit}
+			</if>
+		</set>
+		where businessid =#{businessid}
+	</update>
+	<!-- 删除 -->
+	<delete id="deleteById" parameterType="String">
+		delete from agent where
+		businessid =#{agentId}
+	</delete>
+
+</mapper>

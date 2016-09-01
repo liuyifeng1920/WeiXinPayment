@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="business_pay">
+<!-- <resultMap type="com.miteno.entity.Business_pay" id="businesspayList" >
+	 <id column="recordId" property="recordId"/>
+	 <result column="access_token" property="access_token"/>
+	 <result column="paymentUser" property="paymentUser"/>
+	 <result column="outTradeNo" property="outTradeNo"/>
+	 <result column="paymentAcount" property="paymentAcount"/>
+	 <result column="subject" property="subject"/>
+	 <result column="description" property="description"/>
+	 <result column="price" property="price"/>
+	 <result column="quantity" property="quantity"/>
+	 <result column="totalFee" property="totalFee"/>
+	 <result column="showUrl" property="showUrl"/>
+	 <result column="timeStamp" property="timeStamp"/>
+	 <result column="productID" property="productID"/>
+	 <result column="resultCode" property="resultCode"/>
+	 <result column="resultDescription" property="resultDescription"/>
+	 <result column="transactionId" property="transactionId"/>
+	<association property="bussinessId" column="bussinessId">
+		 <id  column="businessid" property="businessid"/> 
+		<result column="businessname" property="businessname"/>
+		<result column="businesstel" property="businesstel"/>
+		<result column="businessadd" property="businessadd"/>
+	</association>
+	<collection property="appid" column="appid">
+		 <id  column="appid"  property="appid"/>
+		<result column="appname" property="appname"/>
+		<result column="aappkey" property="aappkey"/>
+		<result column="appsecret" property="appsecret"/>
+		<result column="platformID" property="platformID"/>
+		<result column="password" property="password"/>
+		</collection>
+	</resultMap> -->
+	<!-- 以下与实体类的中字段一致 -->
+	<sql id="selectId">
+	recordId,bussinessId,description,outTradeNo,paymentAcount,paymentUser,price,productID,quantity,resultCode,resultDescription,showUrl,subject,timeStamp,totalFee,transactionId
+	</sql>
+<!-- 查询 -->
+	<select id="query" resultType="com.miteno.entity.Business_pay" parameterType="java.util.HashMap" >
+	 SELECT a.recordId ,a.access_token ,a.description,a.outTradeNo,a.paymentAcount,a.paymentUser,a.price,a.productID, 
+	a.quantity,a.resultCode,a.resultDescription,a.showUrl,a.subject,a.timeStamp,a.totalFee,a.transactionId, 
+	(SELECT  appname  FROM  billing_channel WHERE  appid = a.appid) AS  appid,
+	(SELECT  businessname  FROM  agent WHERE  businessid =a.bussinessId ORDER BY businessId LIMIT 0,1) AS  bussinessId
+	 FROM business_pay a where  1=1  
+	 
+	 <if test="t.bussinessId !=null  and t.bussinessId !=''">
+	 	and  bussinessId = (SELECT  businessid  FROM  agent WHERE  businessname like '%${t.bussinessId}%' ORDER BY businessId LIMIT 0,1)
+	 </if>
+	 <if test="t.appid !=null and t.appid !=''">
+		 and appid =(SELECT  appid  FROM  billing_channel WHERE  appname LIKE '%${t.appid}%' ORDER BY appid LIMIT 0,1)  
+	 </if>
+	 <if test="t.startDate !=null ">
+		 and timeStamp >= #{t.startDate}
+	 </if>
+	  <if test="t.endDate !=null ">
+		 and timeStamp &lt; #{t.endDate}
+	 </if>
+	 <if test="t.resultCode !=null and t.resultCode !=''">
+		 and resultCode = #{t.resultCode}
+	 </if>
+	
+	</select>
+	<!-- 根据单号查询订单，做单号是否重复验证使用-->
+	<select id="findByOutTradeNo" resultType="com.miteno.entity.Business_pay" parameterType="String">
+		SELECT * FROM business_pay b WHERE b.outTradeNo=#{outTradeNo}
+	</select>
+	
+	<!-- 提供给下游查询专用sql-->
+	<select id="findMap" resultType="com.miteno.entity.Business_pay" parameterType="java.util.HashMap">
+		SELECT 
+		<include refid="selectId" />
+		FROM business_pay p
+		WHERE 1 = 1
+		 AND p.bussinessId=#{businessid}
+   		 AND p.timeStamp >= #{startTime}
+   		 AND p.timeStamp &lt; #{endTime}
+		LIMIT ${startNumber},${limitNumber}
+		
+	</select>
+	
+	
+	<insert id="add" parameterType="com.miteno.entity.Business_pay">
+		INSERT INTO business_pay
+            (
+             access_token,
+             appid,
+             bussinessId,
+             description,
+             outTradeNo,
+             paymentAcount,
+             paymentUser,
+             price,
+             productID,
+             quantity,
+             resultCode,
+             resultDescription,
+             showUrl,
+             SUBJECT,
+             TIMESTAMP,
+             totalFee,
+             transactionId)
+values (
+		#{access_token},
+        #{appid},
+        #{bussinessId},
+        #{description},
+        #{outTradeNo},
+        #{paymentAcount},
+        #{paymentUser},
+        #{price},
+        #{productID},
+         #{quantity},
+        #{resultCode},
+        #{resultDescription},
+        #{showUrl},
+        #{subject},
+        #{timeStamp},
+        #{totalFee},
+        #{transactionId}
+        )
+		
+	</insert>
+	
+	
+	
+	<!-- 统计当天某个代理商总交易量 -->
+	<select id="findDaySUM" parameterType="String" resultType="int">
+		SELECT IFNULL(SUM(p.totalFee),0) FROM business_pay p WHERE p.bussinessId=#{businessid} AND TO_DAYS(p.timeStamp)=TO_DAYS(NOW());
+	</select>
+	<!-- 统计当月某个代理商总交易量 -->
+	<select id="findMouthSUM" parameterType="String" resultType="int">
+		SELECT IFNULL(SUM(p.totalFee),0) FROM business_pay p WHERE p.bussinessId=#{businessid} AND DATE_FORMAT(p.timeStamp, '%Y%m') = DATE_FORMAT(CURDATE(), '%Y%m');
+	</select>
+	
+</mapper>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="billingchannel">
+	<!-- 查询首页面 -->
+	<select id="query" resultType="com.miteno.entity.BillingChannel" parameterType="java.util.HashMap">
+		SELECT  a.appid,a.appkey,a.appname,a.appsecret,a.password,a.platformID  FROM   billing_channel  a  where 1=1 
+		<if test="t.appid !=null and t.appid !=''">
+			and a.appid = #{t.appid}
+		</if>
+		<if test="t.appname !=null and t.appname !=''">
+			and a.appname  like '%${t.appname}%'
+		</if>
+		order by a.appid
+	</select>
+	<!-- 查询appID -->
+	<select id="getMaxId" resultType="Long">
+		SELECT	 MAX(appid+0)  FROM billing_channel
+	</select>
+	<!--保存插入-->
+	<insert id="add" parameterType="com.miteno.entity.BillingChannel">
+	  insert into  billing_channel(appid,appkey,appname,appsecret,password,platformID)
+	  values(#{appid},#{appkey},#{appname},#{appsecret},#{password},#{platformID})
+	</insert>
+	<!-- 进入修改页面 -->
+	<select id="getById" resultType="com.miteno.entity.BillingChannel" parameterType="String">
+			SELECT  a.appid,a.appkey,a.appname,a.appsecret,a.password,a.platformID  FROM   billing_channel  a  where a.appid=#{appid} 
+	</select>
+	<!-- 更新保存 -->
+	<update id="update" parameterType="com.miteno.entity.BillingChannel">
+	update  billing_channel
+	<set>
+	<if test="appkey !=null">
+	 	appkey =#{appkey},
+	</if>
+	<if test="appname !=null">
+	 appname =#{appname},
+	</if>
+	<if test="appsecret !=null">
+		appsecret =#{appsecret},
+	</if>
+	<if test="password !=null">
+		password =#{password},
+	</if>
+	<if test="platformID !=null">
+		platformID =#{platformID}
+	</if>
+	</set>
+	where  appid = #{appid}
+	</update>
+	<!-- 删除单条 -->
+	<delete id="deleteById" parameterType="String">
+		delete from billing_channel where  appid = #{appid}
+	</delete>
+</mapper>

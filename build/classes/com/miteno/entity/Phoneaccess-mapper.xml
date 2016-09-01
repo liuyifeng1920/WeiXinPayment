@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="phoneaccess">
+<!-- 返回归属地 -->
+	<select id="searchmobileBelong" parameterType="String" resultType="com.miteno.entity.Phoneaccess">
+			 SELECT  province,city,(CASE 
+			WHEN operator =0 THEN '移动'
+			WHEN operator =1 THEN  '电信'
+			WHEN operator =2 THEN '联通'  END ) AS operator 
+		    FROM  phoneaccess  WHERE numberno = #{mobile} and  province= '江苏'
+		    
+		    <!-- SELECT  province,city, operator FROM  phoneaccess  WHERE numberno = #{mobile} -->
+	</select>
+</mapper>

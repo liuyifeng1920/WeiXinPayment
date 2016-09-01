@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="product">
+
+	<!-- 查询面值 -->
+	<select id="queryFace" parameterType="String" resultType="String">
+	SELECT  parvalue  FROM product WHERE showable =1   ORDER BY parvalue*1  ASC 
+	
+	</select>
+	<!-- 查询售价 -->
+	<select id="searchPrice" parameterType="String" resultType="String">
+		SELECT price FROM   product  WHERE parvalue=#{money}
+	</select>
+	<!-- 获取价格区间 -->
+	<select id="searchYhPrice" resultType="String">
+		SELECT  price_scope FROM product WHERE showable =1 ORDER BY  price_scope*1 ASC 
+	</select>
+	
+	<!--后台登陆界面查询-->
+	<select id="query" resultType="com.miteno.entity.Product"
+		parameterType="java.util.HashMap">
+		
+		SELECT *
+		FROM product t
+		WHERE 1 = 1
+		<if test="t.parvalue !=null  and  t.parvalue !=''">
+			 AND t.parvalue = #{t.parvalue}
+		</if>
+		<if test="t.province !=null and  t.province !=''">
+
+			and t.province like '%${t.province}%'
+
+		</if>
+		<if test="t.operator !=null  and  t.operator !=''">
+			 AND t.operator = #{t.operator}
+		</if>
+		<if test="t.showable !=null  and  t.showable !=''">
+			 AND t.showable = #{t.showable}
+		</if>
+		
+	</select>
+	<!-- 删除 -->
+	<delete id="deleteById" parameterType="String">
+		DELETE FROM product WHERE product_id =#{product_id} 
+	</delete>
+	<!-- 添加 -->
+
+	<insert id="add" parameterType="com.miteno.entity.Product">
+		INSERT  INTO product(`operator`,`province`,`parvalue`,`showable`,`price_scope`,`price`) 
+VALUES (#{operator},#{province},#{parvalue},#{showable},#{price_scope},#{price})
+		
+	</insert>
+	
+	<!-- 进入修改页面 -->
+
+	<select id="getById" parameterType="String" resultType="com.miteno.entity.Product">
+		select * FROM product WHERE product_id =#{productId} 
+	</select>
+	
+	<update id="update" parameterType="com.miteno.entity.Product">
+		update product
+		<set>
+			<if test="operator !=null">
+				operator = #{operator},
+			</if>
+			<if test=" province !=null">
+				province = #{province},
+			</if>
+			<if test=" parvalue !=null">
+				parvalue = #{parvalue},
+			</if>
+			<if test=" showable !=null">
+				showable =#{showable},
+			</if>
+			<if test=" price_scope !=null">
+				price_scope =#{price_scope},
+			</if>
+			<if test=" price !=null">
+				price =#{price}
+			</if>
+		</set>
+		where product_id =#{product_id}
+	</update>
+</mapper>

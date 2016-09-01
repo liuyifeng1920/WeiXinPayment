@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="orderdata">
+	<!-- 查询订单号 -->
+	<select id="query" parameterType="String" resultType="com.miteno.entity.OrderData">
+		SELECT * FROM orderdata
+		 WHERE 1=1 
+		<if test="t.phone_number != null and t.phone_number != ''">
+				and phone_number = #{t.phone_number}
+		</if>
+		<if test="t.inner_order_number != null and t.inner_order_number != ''">
+				and inner_order_number = #{t.inner_order_number }
+		</if>
+		<if test="t.send_order_number != null and t.send_order_number != ''">
+				and send_order_number = #{t.send_order_number }
+		</if>
+		<if test="t.order_status != null and t.order_status != ''">
+				and order_status = #{t.order_status }
+		</if>
+		<if test="t.startDate != null and t.startDate != ''">
+				and recharge_date >= #{t.startDate }
+		</if>
+		<if test="t.endDate != null and t.endDate != ''">
+				and recharge_date &lt; #{t.endDate }
+		</if>
+				order by recharge_date  desc 
+	</select>
+	<!-- 更新订单号 -->
+	<insert id="saveOrder" parameterType="com.miteno.entity.OrderData">
+	insert into orderdata(
+		phone_number,
+		recharge_date,
+		inner_order_number,
+		send_order_number,
+		money,
+		order_status,
+		describe_mes,
+		pay_money)
+		values(
+		#{phone_number},
+		#{recharge_date},
+		#{inner_order_number},
+		#{send_order_number},
+		#{money},
+		#{order_status},
+		#{describe_mes},
+		#{pay_money}
+		)
+	</insert>
+	<!-- 查询订单号 -->
+	<select id="searchData" parameterType="java.util.HashMap" resultType="com.miteno.entity.OrderData">
+			SELECT phone_number ,money , recharge_date  ,pay_money  , order_status
+				FROM orderdata  where 1=1 
+		<if test="t.phone_number !=null and t.phone_number !=''">
+					and phone_number =#{t.phone_number}
+		</if>
+		<if test="t.recharge_date !=null and  t.recharge_date !=''">
+					and DATE_FORMAT(recharge_date,'%Y-%m-%d') >= date_format( #{t.recharge_date},'%Y-%m-%d' )
+		</if>
+				order by recharge_date desc
+	</select>
+	<!-- 根据内部单号查询订单信息 -->
+	<select id="searchpayDataList" parameterType="string" resultType="com.miteno.entity.OrderData">
+			SELECT * FROM  orderdata  WHERE inner_order_number =#{param}
+	</select>
+	<!-- 根据内部单号更新订单状态 -->
+	<update id="updateOrder" parameterType="map">
+		update orderdata
+		<set>
+				order_status=#{orderStatus},
+				describe_mes=#{describeMes}
+		</set>
+		where inner_order_number=#{innerOrderNumber}
+	</update>
+	<!-- 根据发送给上游单号更新订单状态 -->
+	<update id="updateOrderBySendOrderNumber" parameterType="map">
+		update orderdata
+		<set>
+				order_status=#{orderStatus},
+				describe_mes=#{describeMes}
+		</set>
+		where send_order_number=#{sendOrderNumber}
+	</update>
+</mapper>

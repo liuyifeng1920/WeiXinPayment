@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" 
+	"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<typeAliases>
+	<!-- 给实体Bean一个别名-->
+		<typeAlias type="com.miteno.entity.User" alias="User" />
+		<typeAlias type="com.miteno.entity.UserLoginList" alias="UserLoginList" />
+		<typeAlias type="com.miteno.entity.Resources" alias="Resources"/>
+		<typeAlias type="com.miteno.entity.Roles" alias="Roles"/>
+		<typeAlias type="com.miteno.entity.ResourceRoles" alias="ResourceRoles"/>
+		<typeAlias type="com.miteno.entity.UserRoles" alias="UserRoles"/>
+		
+		<typeAlias type="com.miteno.entity.Log" alias="Log"/>
+	</typeAliases>
+</configuration>
